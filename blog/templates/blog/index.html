@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Blog</title>
+  
+    
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .post {
+      background: white;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .post h2 {
+      color: #333;
+    }
+    .post p {
+      color: #555;
+    }
+    .date {
+      font-size: 0.85em;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📚 My Blog Posts</h1>
+  <div id="posts-container"></div>
+
+  <script>
+    const apiURL = "http://127.0.0.1:8000/api/posts/";
+
+    // Fetch blog posts from your API
+    fetch(apiURL)
+      .then(response => {
+        if (!response.ok) throw new Error("Network error");
+        return response.json();
+      })
+      .then(posts => {
+        const container = document.getElementById('posts-container');
+        posts.forEach(post => {
+          const postElement = document.createElement('div');
+          postElement.className = 'post';
+          postElement.innerHTML = `
+            <h2>${post.blog_title}</h2>
+            <p class="date">Posted on: ${new Date(post.created_at).toLocaleDateString()}</p>
+            <p>${post.blog_content}</p>
+          `;
+          container.appendChild(postElement);
+        });
+      })
+      .catch(error => {
+        document.getElementById('posts-container').innerHTML = `<p style="color:red;">Failed to load posts: ${error}</p>`;
+      });
+  </script>
+
+</body>
+</html>

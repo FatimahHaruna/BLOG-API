@@ -8,3 +8,6 @@ class BlogPostViewSet(viewsets.ModelViewSet):
     queryset = BlogPost.objects.all() #tells django what data this view will work with
     serializer_class = BlogPostSerializer #tells the view which serializer to use to convert the data
     
+
+def home(request):
+    return render(request, 'blog/index.html')
